@@ -4,9 +4,9 @@ using System.Collections;
 public class PlayerShooting : MonoBehaviour
 {
 
-    public ParticleSystem muzzleFlash;
+    //public ParticleSystem muzzleFlash;
     Animator anim;
-    public GameObject impactPrefab;
+    //public GameObject impactPrefab;
 
     GameObject[] impacts;
     int currentImpact = 0;
@@ -19,23 +19,24 @@ public class PlayerShooting : MonoBehaviour
     void Start()
     {
 
-        impacts = new GameObject[maxImpacts];
-        for (int i = 0; i < maxImpacts; i++)
-            impacts[i] = (GameObject)Instantiate(impactPrefab);
+        //impacts = new GameObject[maxImpacts];
+        //for (int i = 0; i < maxImpacts; i++)
+        //    impacts[i] = (GameObject)Instantiate(impactPrefab);
 
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponent<Animator>();
+        Debug.Log(anim.GetBool("isAiming"));
     }
 
     // Update is called once per frame
     void Update()
     {
+        isAiming = Input.GetKey(KeyCode.Mouse1);
+        anim.SetBool("isAiming", isAiming);
 
-        if (Input.GetButtonDown("Fire1") && !Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !Input.GetKey(KeyCode.LeftShift))
         {
-            isAiming = Input.GetButtonDown("Fire2");
-            anim.SetBool("isAiming",isAiming);
-            muzzleFlash.Play();
-            if(isAiming)
+           
+            //muzzleFlash.Play();
             if (isAiming)
                 anim.SetTrigger("aimedFire");
             else

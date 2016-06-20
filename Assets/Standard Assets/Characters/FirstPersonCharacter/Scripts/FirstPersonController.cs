@@ -85,8 +85,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
-            anim.SetBool("isRunning", m_IsWalking);
-            if (m_IsWalking) anim.SetBool("isAiming", false);
+            anim.SetBool("isRunning", !m_IsWalking);
+            if (!m_IsWalking) anim.SetBool("isAiming", false);
 
         }
 
