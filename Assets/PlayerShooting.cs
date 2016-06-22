@@ -12,6 +12,8 @@ public class PlayerShooting : MonoBehaviour
     int currentImpact = 0;
     int maxImpacts = 5;
 
+	public ParticleEmitter muzzleFlash;
+
     bool shooting = false;
     bool isAiming = false;
 
@@ -22,7 +24,7 @@ public class PlayerShooting : MonoBehaviour
         //impacts = new GameObject[maxImpacts];
         //for (int i = 0; i < maxImpacts; i++)
         //    impacts[i] = (GameObject)Instantiate(impactPrefab);
-
+		muzzleFlash.emit=false;
         anim = GetComponent<Animator>();
         Debug.Log(anim.GetBool("isAiming"));
     }
@@ -41,6 +43,7 @@ public class PlayerShooting : MonoBehaviour
                 anim.SetTrigger("aimedFire");
             else
                 anim.SetTrigger("blindFire");
+			muzzleFlash.Emit ();
             shooting = true;
         }
 
