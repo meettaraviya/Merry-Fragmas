@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\NetworkManager.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\Demo2DJumpAndRun.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\JumpAndRunMovement.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
@@ -181,6 +182,7 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
+     <Compile Include="Assets\PlayerNetworkMover.cs" />
      <Compile Include="Assets\PlayerShooting.cs" />
      <None Include="Assets\Photon Unity Networking\Demos\MarcoPolo-Tutorial\marcopolo-readme.txt" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />

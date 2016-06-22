@@ -4,70 +4,77 @@ using System.Collections;
 public class PlayerShooting : MonoBehaviour
 {
 
-    //public ParticleSystem muzzleFlash;
-    Animator anim;
-    //public GameObject impactPrefab;
+	//public ParticleSystem muzzleFlash;
+	Animator anim;
+	//public GameObject impactPrefab;
 
-    GameObject[] impacts;
-    int currentImpact = 0;
-    int maxImpacts = 5;
-
+	//GameObject[] impacts;
+	//int currentImpact = 0;
+	int maxImpacts = 5;
+	float damageBody = 25f;
+	float damageHead = 80f;
 	public ParticleEmitter muzzleFlash;
+	bool shooting = false;
+	bool isAiming = false;
 
-    bool shooting = false;
-    bool isAiming = false;
+	// Use this for initialization
+	void Start()
+	{
 
-    // Use this for initialization
-    void Start()
-    {
-
-        //impacts = new GameObject[maxImpacts];
-        //for (int i = 0; i < maxImpacts; i++)
-        //    impacts[i] = (GameObject)Instantiate(impactPrefab);
+		//impacts = new GameObject[maxImpacts];
+		//for (int i = 0; i < maxImpacts; i++)
+		//    impacts[i] = (GameObject)Instantiate(impactPrefab);
 		muzzleFlash.emit=false;
-        anim = GetComponent<Animator>();
-        Debug.Log(anim.GetBool("isAiming"));
-    }
+		anim = GetComponent<Animator>();
+		Debug.Log(anim.GetBool("isAiming"));
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        isAiming = Input.GetKey(KeyCode.Mouse1);
-        anim.SetBool("isAiming", isAiming);
+	// Update is called once per frame
+	void Update()
+	{
+		isAiming = Input.GetKey(KeyCode.Mouse1);
+		anim.SetBool("isAiming", isAiming);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !Input.GetKey(KeyCode.LeftShift))
-        {
-           
-            //muzzleFlash.Play();
-            if (isAiming)
-                anim.SetTrigger("aimedFire");
-            else
-                anim.SetTrigger("blindFire");
+		if (Input.GetKeyDown(KeyCode.Mouse0) && !Input.GetKey(KeyCode.LeftShift))
+		{
+
+			//muzzleFlash.Play();
+			if (isAiming)
+				anim.SetTrigger("aimedFire");
+			else
+				anim.SetTrigger("blindFire");
 			muzzleFlash.Emit ();
-            shooting = true;
-        }
+			shooting = true;
+		}
 
-    }
+	}
 
-    void FixedUpdate()
-    {
-        if (shooting)
-        {
-            shooting = false;
+	void FixedUpdate()
+	{
+		if (shooting)
+		{
+			shooting = false;
 
-            RaycastHit hit;
+			RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 50f))
-            {
-                if (hit.transform.tag == "Enemy")
-                    Destroy(hit.transform.gameObject);
+			if (Physics.Raycast(transform.position, transform.forward, out hit, 50f))
+			{
+				if (hit.transform.tag == "Body")
+				{
+					hit.transform.GetComponent<PhotonView>().RPC("GetShot", PhotonTargets.All, damageBody);
+				}
+				if (hit.transform.tag == "Head")
+				{
+					hit.transform.GetComponent<PhotonView>().RPC("GetShot", PhotonTargets.All, damageHead);
+				}
 
-                impacts[currentImpact].transform.position = hit.point;
-                impacts[currentImpact].GetComponent<ParticleSystem>().Play();
 
-                if (++currentImpact >= maxImpacts)
-                    currentImpact = 0;
-            }
-        }
-    }
+				//impacts[currentImpact].transform.position = hit.point;
+				//impacts[currentImpact].GetComponent<ParticleSystem>().Play();
+
+				//if (++currentImpact >= maxImpacts)
+				//    currentImpact = 0;
+			}
+		}
+	}
 }
