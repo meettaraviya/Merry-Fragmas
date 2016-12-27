@@ -14,7 +14,7 @@ numPrComp = 21
 shocks = matrix(rnorm(numDaysToPredict*numPrComp),numDaysToPredict,numPrComp)%*%diag(pcaResult$sdev[1:numPrComp])
 
 drifts = matrix(0,numPrComp,numDaysToPredict)
-dt = 1/366
+dt = 1/365
 for(k in 1:numPrComp){
   driftSum = 0
   factorSqSum = 0
@@ -43,20 +43,19 @@ for(k in 1:6){
   initYields[k,1]= ((k-7)*lastKnownRates[[2]]+(14-k)*lastKnownRates[[1]])/7
 }
 require(zoo)
+library(zoo)
 initYields = na.approx(initYields)
 
 spotRates = matrix(0,numDaysToPredict,1)
 spotRates[1,1] = initYields[1]
 
-forwardRates = matrix(0,numDaysToPredict,numDaysToPredict)
-
-for(k in 1:numDaysToPredict){
-  forwardRates[1,k] = (k+1)*initYields[k+1]- k*initYields[k]
-}
-
-for(m in 1:numDaysToPredict){
-  for(k in numDaysToPredict){
-    
+for(m in 2:numDaysToPredict){
+  for(k in 1:(numDaysToPredict+1-m)){
+    forwardRates[m,k] = forwardRates[m-1,k+1]+totalDrifts[k+1]*dt+totalDelta[k+1,m]*dt
   }
+  spotRates[m,1] = forwardRates[m-1,1]+totalDrifts[m-1]*dt+totalDelta[1,m-1]*dt
 }
+
+
+
 
